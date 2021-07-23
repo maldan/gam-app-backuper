@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/maldan/gam-app-backuper/internal/app/backuper/api"
+	"github.com/maldan/gam-app-backuper/internal/app/backuper/core"
 	"github.com/maldan/go-restserver"
 	"github.com/zserge/lorca"
 )
-
-var DataDir = ""
 
 func Start(frontFs embed.FS) {
 	var host = flag.String("host", "127.0.0.1", "Server Hostname")
@@ -22,7 +22,7 @@ func Start(frontFs embed.FS) {
 	var dataDir = flag.String("dataDir", "db", "Data Directory")
 	_ = flag.String("appId", "id", "App id")
 	flag.Parse()
-	DataDir = *dataDir
+	core.DataDir = *dataDir
 
 	if *gui {
 		go (func() {
@@ -34,10 +34,12 @@ func Start(frontFs embed.FS) {
 		})()
 	}
 
+	core.StartS3()
+
 	restserver.Start(fmt.Sprintf("%s:%d", *host, *port), map[string]interface{}{
 		"/": restserver.VirtualFs{Root: "frontend/build/", Fs: frontFs},
 		"/api": map[string]interface{}{
-			"test":  TestApi{},
+			"main": api.MainApi{},
 		},
 	})
 }
