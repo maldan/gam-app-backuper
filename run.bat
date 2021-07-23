@@ -1,0 +1,1 @@
+go run . --appId=dev-backuper-app --host=127.0.0.1 --port=16000 --clientPort=8080 --dataDir=C:\Users\black\.gam-data\maldan-gam-app-backuper    

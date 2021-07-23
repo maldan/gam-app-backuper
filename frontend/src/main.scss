@@ -5,7 +5,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
-  background: #333333;
+  background: #2b2b2b;
   color: #fefefe;
   height: 100%;
 }
@@ -18,8 +18,22 @@ a {
   color: #fefefe;
 }
 
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating {
+  animation: rotating 2s linear infinite;
+}
+
 .clickable {
   cursor: pointer;
+  user-select: none;
 
   &:hover {
     opacity: 0.7;

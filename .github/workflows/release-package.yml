@@ -18,9 +18,11 @@ jobs:
 
       - run: cd frontend && npm ci && npm run build && cd ..
       - run: GOARCH=amd64 GOOS=linux go build -ldflags "-s -w" -o app .
-      - run: GOARCH=amd64 GOOS=windows go build -ldflags "-s -w" -o app.exe .
       - run: zip -9 -r application-linux-amd64.zip app
-      - run: zip -9 -r application-windows-amd64.zip app.exe
+
+      - run: rm app
+      - run: GOARCH=arm64 GOOS=linux go build -ldflags "-s -w" -o app .
+      - run: zip -9 -r application-linux-arm64.zip app
 
       - run: echo "RELEASE_VERSION=`git tag | sort -V | tail -1`" >> $GITHUB_ENV
 
@@ -32,4 +34,4 @@ jobs:
           automatic_release_tag: ${{ env.RELEASE_VERSION }}
           files: |
             application-linux-amd64.zip
-            application-windows-amd64.zip
+            application-linux-arm64.zip
